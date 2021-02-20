@@ -1,20 +1,20 @@
-#' Covariate-constrained randomization for cluster randomized trials
+#' Covariate-by-covariate constrained randomization for cluster randomized trials
 #' @param clustername a vector specifying the identification variable of the cluster. If no cluster identification variable is specified, the default is to label the clusters based on the order in which they appear.
 #' @param x a data frame specifying the values of cluster-level covariates to balance. With K covariates and n clusters, it will be dimension of \code{n} by \code{K}.
 #' @param categorical a vector specifying categorical (including binary) variables. This can be names of the columns or number indexes of columns, but cannot be both. Suppose there are \code{p} categories for a categorical variable, \code{cvcrand} function creates \code{p-1} dummy variables and drops the reference level if the variable is specified as a factor. Otherwise, the first level in the alphanumerical order will be dropped. The results are sensitive to which level is excluded. If the user wants to specify a different level to drop for a \code{p}-level categorical variable, the user can create \code{p-1} dummy variables and these can instead be supplied as covariates to the \code{cvcrand} function. Then, the user needs to specify the dummy variables created to be \code{categorical} when running \code{cvcrand}. In addition, the user could also set the variable as a factor with the specific reference level. If the \code{weights} option is used, the weights for a categorical variable will be replicated on all the dummy variables created.
-#' @param constraints a vector of user-specified constraints for all covariates. \code{"any"} means no constraints. If not \code{"any"}, the first character letter of \code{"m"} denotes absolute mean difference, and \code{"s"} means absolute sum difference. If the second character is \code{"f"}, the previous metric is constrained to be smaller or equal to the fraction with the number followed of the overall mean for \code{"m"} or mean arm total for \code{"s"}. If not \code{"f"} at the second character, the metric is just constrained to be smaller or equal to the value followed. 
+#' @param constraints a vector of user-specified constraints for all covariates. \code{"any"} means no constraints. If not \code{"any"}, the first character letter of \code{"m"} denotes absolute mean difference, and \code{"s"} means absolute sum difference. If the second character is \code{"f"}, the previous metric is constrained to be smaller or equal to the fraction with the number followed of the overall mean for \code{"m"} or mean arm total for \code{"s"}. If not \code{"f"} at the second character, the metric is just constrained to be smaller or equal to the value following letter(s). 
 #' @param ntotal_cluster the total number of clusters to be randomized. It must be a positive integer and equal to the number of rows of the data.
 #' @param ntrt_cluster  the number of clusters that the researcher wants to assign to the treatment arm. It must be a positive integer less than the total number of clusters.
 #' @param size number of randomization schemes to simulate if the number of all possible randomization schemes is over \code{size}. Its default is \code{50,000}, and must be a positive integer. It can be overriden by the \code{nosim} option.
 #' @param seed seed for simulation and random sampling. It is needed so that the randomization can be replicated. Its default is \code{12345}.
-#' @param nosim if TRUE, it overrides the default procedure of simulating when the number of all possible randomization schemes is over the \code{size}, and the program enumerates all randomization schemes. Note: this may consume a lot of memory and cause R to crash
-#' @param savedata saves the data set of the constrained randomization space in a csv file if specified by string. The first column of the csv file is an indicator variable of the final randomization scheme in the constrained space. The constrained randomization space will be needed for analysis after the cluster randomized trial is completed if the clustered permutation test is used.
+#' @param nosim if TRUE, it overrides the default procedure of simulating when the number of all possible randomization schemes is over \code{size}, and the program enumerates all randomization schemes. Note: this may consume a lot of memory and cause R to crash
+#' @param savedata saves the data set of the constrained randomization space in a csv file if specified by \code{savedata}. The first column of the csv file is an indicator variable of the final randomization scheme in the constrained space. The constrained randomization space will be needed for analysis after the cluster randomized trial is completed if the clustered permutation test is used.
 #' @param check_validity boolean argument to check the randomization validity or not
-#' @param samearmhi clusters assigned to the same arm as least this often are taken. The default is 0.75. 
-#' @param samearmlo clusters assigned to the same arm at most this often are displayed. The default is 0.25. 
-#' @keywords cluster randomized trails, covariate-by-covariate constrained randomization
-#' @author Hengshi Yu <hengshi@umich.edu>, Fan Li <frank.li@duke.edu>, John A. Gallis <john.gallis@duke.edu>, Elizabeth L. Turner <liz.turner@duke.edu>
-#' @description cvrcov performs covariate-by-covariate constrained randomization for cluster randomized
+#' @param samearmhi clusters assigned to the same arm as least this often are displayed. The default is \code{0.75}. 
+#' @param samearmlo clusters assigned to the same arm at most this often are displayed. The default is \code{0.25}. 
+#' @keywords cluster-randomized-trails covariate-by-covariate-constrained-randomization
+#' @author Hengshi Yu <hengshi@umich.edu>, Fan Li <fan.f.li@yale.edu>, John A. Gallis <john.gallis@duke.edu>, Elizabeth L. Turner <liz.turner@duke.edu>
+#' @description \code{cvrcov} performs covariate-by-covariate constrained randomization for cluster randomized
 #' trials (CRTs), especially suited for CRTs with a small number of clusters. In constrained randomization,
 #' a randomization scheme is randomly sampled from a subset of all possible randomization schemes
 #' based on the constraints on each covariate. 
@@ -40,27 +40,31 @@
 #' @export
 #' @examples
 #'
-#' # cvcrand example
+#' 
+#' # cvrcov example
 #'
 #' Dickinson_design_numeric <- Dickinson_design
 #' Dickinson_design_numeric$location = (Dickinson_design$location == "Rural") * 1
 #' Design_cov_result <- cvrcov(clustername = Dickinson_design_numeric$county,
-#'                             x = data.frame(Dickinson_design_numeric[ , c(2, 3, 5, 7, 11)]),
+#'                             x = data.frame(Dickinson_design_numeric[ , c("location", "inciis",
+#'                                 "uptodateonimmunizations", "hispanic", "income")]),
 #'                             ntotal_cluster = 16,
 #'                             ntrt_cluster = 8,
-#'                             constraints = c("s5", "mf.5", "any", "any", "mf0.4"), 
+#'                             constraints = c("s5", "mf.5", "any", "mf0.2", "mf0.2"), 
 #'                             categorical = c("location"),
-#'                             savedata = "dickinson_cov_constrained.csv",
+#'                             ###### Option to save the constrained space ######
+#'                             # savedata = "dickinson_cov_constrained.csv",
 #'                             seed = 12345, 
 #'                             check_validity = TRUE)
-#'
+#' 
+#' 
 #' @return \code{allocation} the allocation scheme from constrained randomization
 #' @return \code{assignment_message} the statement about how many clusters to be randomized to the intervention and the control arms respectively
 #' @return \code{scheme_message} the statement about how to get the whole randomization space to use in constrained randomization
-#' @return \code{data_CR} the data frame containing the allocation scheme, the clustername as well as the original data frame of covariates
+#' @return \code{data_CR} the data frame containing the allocation scheme, the \code{clustername}, and the original data frame of covariates
 #' @return \code{baseline_table} the descriptive statistics for all the variables by the two arms from the selected scheme
 #' @return \code{cluster_coincidence} cluster coincidence matrix
-#' @return \code{cluster_coin_des} cluster coincedence descriptive
+#' @return \code{cluster_coin_des} cluster coincidence descriptive
 #' @return \code{clusters_always_pair} pairs of clusters always allocated to the same arm.
 #' @return \code{clusters_always_not_pair} pairs of clusters always allocated to different arms.
 #' @return \code{clusters_high_pair}  pairs of clusters randomized to the same arm at least \code{samearmhi} of the time.
@@ -68,7 +72,7 @@
 #' @return \code{overall_allocations} frequency of acceptable overall allocations.
 #' @return \code{overall_summary} summary of covariates with constraints in the constrained space
 
-cvrcov = function(clustername = NULL, x, categorical = NULL,  constraints, ntotal_cluster, ntrt_cluster,  size = 100000, seed = NULL, nosim = FALSE, savedata = NULL, check_validity = FALSE, samearmhi = 0.75, samearmlo = 0.25){
+cvrcov = function(clustername = NULL, x, categorical = NULL,  constraints, ntotal_cluster, ntrt_cluster,  size = 50000, seed = NULL, nosim = FALSE, savedata = NULL, check_validity = FALSE, samearmhi = 0.75, samearmlo = 0.25){
 
 if (!is.null(seed)) {
       set.seed(seed)
@@ -300,7 +304,8 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
 
   R_result <- dim(qmt)[1]
   
-  summary_constraints <- cbind(R, S, R_result, round(R_result/S, 3))
+
+  summary_constraints <- as.data.frame(cbind(S, R, R_result, paste0(round(R_result/R, 4) * 100, "%")))
   colnames(summary_constraints) <- c("overall allocations", "checked allocations", "accepted allocations", "overall % acceptable")
   rw <- sample(R_result, 1)
 
@@ -310,22 +315,31 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
 
     sim <- 1
     # indicate simulation
-    R = choose(nsub, ntrt)
+    R_over = choose(nsub, ntrt)
     S <- size # randomization sample size
 
-    pmt <- qmt <-  omt <- mumt <- omumt <- matrix(NA, S, nsub)
+    qmt <- matrix(NA, S, nsub)
 
-    trt_list <- list()
+
     for(s in 1:S){
-      trt_if_diff <- TRUE
-      
-      while(trt_if_diff){
-        trt <- sample(1:nsub, ntrt)
-        trt_if_diff <- !all(!unlist(lapply(1:length(trt_list), function(i) setequal(trt, trt_list[[i]]))))
-      }
 
-      trt_list[[s]] <- trt
+      trt <- sample(1:nsub, ntrt)
             
+      qmt[s, trt] <- 1 # for final
+      qmt[s, -trt] <- 0 # for final 
+    }
+
+
+    qmt <- unique(qmt)
+    R <- dim(qmt)[1]
+  
+    pmt <-  omt <- mumt <- omumt <- matrix(NA, R, nsub)
+
+    for(s in 1:R){
+
+
+      trt <- which(qmt[s, ] == 1)
+
       omt[s, ] <- 1/2 # for mean arm total
       omumt[s, ] <- 1/nsub  # for overall mean
       
@@ -335,8 +349,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
       mumt[s, trt]  <- 1/ntrt # for arm mean
       mumt[s, -trt] <- -1/(nsub - ntrt) # for arm mean
       
-      qmt[s, trt] <- 1 # for final
-      qmt[s, -trt] <- 0 # for final 
+
     }
 
   any_or_not <- 1 * (constraints == "any")
@@ -348,7 +361,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
 
   use_fraction_or_not = 1 * (fraction_or_not == "f")
 
-  sat_num = S
+  sat_num = R
   for(i in 1:length(constraints)){  
     if(any_or_not[i] == 0){
       if(constraints_list[i] == "m"){
@@ -413,7 +426,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
 
   R_result <- dim(qmt)[1]
   
-  summary_constraints <- cbind(R, S, R_result, round(R_result/S, 3))
+  summary_constraints <- as.data.frame(cbind(R_over, R, R_result, paste0(round(R_result/R, 4) * 100, "%")))
   colnames(summary_constraints) <- c("overall allocations", "checked allocations", "accepted allocations", "overall % acceptable")
   rw <- sample(R_result, 1)
 
@@ -427,7 +440,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
 
     SchemeChosen[rw] <- 1
 
-    pmt<-cbind(SchemeChosen, qmt)
+    pmt <- cbind(SchemeChosen, qmt)
 
     write.csv(qmt, file = savedata, row.names=FALSE)
   }
@@ -443,8 +456,8 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
         for(k in (j+1):nsub){
           same_arm <- sum((qmt[,j] - qmt[, k]) == 0)
           diff_arm <-  R_result - same_arm
-          same_prop <- same_arm/R_result
-          diff_prop <- 1.0 - same_prop
+          same_prop <- round(same_arm/R_result, 4)
+          diff_prop <- round(1.0 - same_prop, 4)
           index_jk <- which(unlist(lapply(1:dim(n_pair)[1], function(i) setequal(c(j,k), n_pair[i, ]))))
           
           same_arm_count[index_jk] <- same_arm
@@ -455,12 +468,12 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
       }
       first_cluster <- id[n_pair[,1]]
       second_cluster <- id[n_pair[,2]]
-      coin_matrix <- cbind(first_cluster, 
+      coin_matrix <- as.data.frame(cbind(first_cluster, 
                                   second_cluster, 
                                   same_arm_count, 
-                                  same_arm_frac, 
+                                  paste0(same_arm_frac * 100, "%"), 
                                   diff_arm_count, 
-                                  diff_arm_frac)
+                                  paste0(diff_arm_frac * 100, "%")))
       
       
       # Always togerther
@@ -475,7 +488,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
 
         alto_all_pt <- rep("100.0%", length(alto_index))
         
-        al_clusters <- cbind(alto_clt_pair, alto_all_pt)
+        al_clusters <- as.data.frame(cbind(alto_clt_pair, alto_all_pt))
         colnames(al_clusters) <- c("cluter pair", "% allocs in the same arm")
       }
 
@@ -491,7 +504,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
 
         alnoto_all_pt <- rep("0.0%", length(alnoto_index))
         
-        alno_clusters <- cbind(alnoto_clt_pair, alnoto_all_pt)
+        alno_clusters <- as.data.frame(cbind(alnoto_clt_pair, alnoto_all_pt))
         colnames(alno_clusters) <- c("cluter pair", "% allocs in the same arm")
       }
       
@@ -509,7 +522,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
         hi_pt <- paste0(same_arm_frac[hi_index] * 100, "%")
         hi_num <- same_arm_count[hi_index]
         hi_non_num <- diff_arm_count[hi_index]
-        hi_clusters <- cbind(hi_pair, hi_pt, hi_num, hi_non_num)
+        hi_clusters <- as.data.frame(cbind(hi_pair, hi_pt, hi_num, hi_non_num))
         colnames(hi_clusters) <- c("cluster pair", "% allocs in same arm", "# allocs in same arm", "# allocs in different arms")
       }
       
@@ -526,7 +539,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
         lo_pt <- paste0(same_arm_frac[lo_index] * 100, "%")
         lo_num <- same_arm_count[lo_index]
         lo_non_num <- diff_arm_count[lo_index]
-        lo_clusters <- cbind(lo_pair, lo_pt, lo_num, lo_non_num)
+        lo_clusters <- as.data.frame(cbind(lo_pair, lo_pt, lo_num, lo_non_num))
         colnames(lo_clusters) <- c("cluster pair", "% allocs in same arm", "# allocs in same arm", "# allocs in different arms")
       }
       
@@ -546,6 +559,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
         )
       )
 
+      coin_descri <- round(coin_descri, 3)
 
       colnames(coin_descri) <- c("Mean", "Std Dev", "Minimum", "25th Pctl", 
                                  "Median", "75th Pctl", "Maximum")
@@ -573,7 +587,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
   # indicate a enumeration process or a simulation process with the detailed number of schemes
     if(sim == 1){
 
-    scheme_message <- paste("Simulating", S, "schemes unique schemes for", ntrt, "clusters in the treatment arm out of", n, "clusters in total")
+    scheme_message <- paste("Simulating", S, "schemes with", R, "unique schemes for", ntrt_cluster, "clusters in the treatment arm out of", ntotal_cluster, "clusters in total")
 
           } else {
 
@@ -584,6 +598,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
        data_merge <- data.frame(inter, id, data)
       # data frame including the chosen scheme from BL, cluster id and the covariates
 
+      colnames(data_merge)[1] <- "arm"
 
       if(!is.null(categorical)){
      # put the categorical variables into factors to prepare for the "CreateTableOne" function
@@ -605,16 +620,19 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
 
     }
 
-      Descriptive_statistics <- CreateTableOne( vars = colnames(data_merge)[c(-1, -2)], strata=c("inter"), data=data_merge)
+      Descriptive_statistics <- CreateTableOne( vars = colnames(data_merge)[c(-1, -2)], strata=c("arm"), data=data_merge, test =  FALSE)
        # create the descriptive table to compare the two arms from constrained randomization using BL
 
+      invisible(capture.output(DS <- as.data.frame(print(Descriptive_statistics))))
+     # transform the table into a data frame
 
+      colnames(DS)[1:2] <- c("arm = 0", "arm = 1")
 
   return(list(allocation = Allocation,
              assignment_message = assignment_message,
              scheme_message = scheme_message,
              data_CR = data_merge,
-             baseline_table = Descriptive_statistics, 
+             baseline_table = DS, 
              cluster_coincidence = coin_matrix, 
              cluster_coin_des = coin_descri, 
              clusters_always_pair = al_clusters, 

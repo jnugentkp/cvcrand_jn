@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.com/hengshiyu/cvcrand.svg?token=ZtDwjW3Z5FqDgnzwZCn6&branch=master)](https://travis-ci.com/hengshiyu/cvcrand)
 
+[![](https://cranlogs.r-pkg.org/badges/cvcrand)](https://cran.r-project.org/package=cvcrand)
+
 # cvcrand: a package for covariate-constrained randomization and clustered permutation test for cluster randomized trials
 Hengshi Yu, Fan Li, John A. Gallis and Elizabeth L. Turner
 

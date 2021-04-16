@@ -80,7 +80,7 @@ if (!is.null(seed)) {
       set.seed(12345)
       } ##default seed to be 12345
 
-  if(is.null(clustername)){
+  if (is.null(clustername)) {
 
     clustername <- 1:dim(x)[1]
 

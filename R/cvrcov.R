@@ -239,9 +239,9 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
   use_fraction_or_not = 1 * (fraction_or_not == "f")
 
   sat_num = R
-  for(i in 1:length(constraints)){  
+  for (i in 1:length(constraints)) {  
 
-    if(any_or_not[i] == 0){
+    if (any_or_not[i] == 0) {
       
       if(constraints_list[i] == "m"){
         BL_means <- abs(mumt %*% as.matrix(x[,i]))

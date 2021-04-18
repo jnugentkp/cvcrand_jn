@@ -342,7 +342,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
     pmt <- matrix(NA, R, nsub)         # indicating clusters to get the treatment
     S <- R
 
-    for (r in 1:R){
+    for (r in 1:R) {
       pmt[r, emr[r, ]] <- 1
       pmt[r, -emr[r, ]] <- 0
     }
@@ -355,7 +355,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
           BL <- apply(abs((pmt %*% ((x - matrix(apply(x, 2, mean), nsub, np, byrow = TRUE)) / matrix(apply(x, 2, sd), nsub, np, byrow = TRUE)))), 1, sum)
           # l1 norm B score: if there are no weights specified, the default weights are the standard deviations
 
-      } else if (balancemetric=="l2") {
+      } else if (balancemetric == "l2") {
         BL <- apply(((pmt %*% ((x - matrix(apply(x, 2, mean), nsub, np, byrow = TRUE)) / matrix(apply(x, 2, sd), nsub, np, byrow = TRUE))))^2, 1, sum)
       # l2 norm B score: if there are no weights specified, the default weights are the variances
 
@@ -363,7 +363,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
 
       } else {
 
-      if (balancemetric =="l1") {
+      if (balancemetric == "l1") {
 
        BL <- apply(abs((pmt %*% ((x - matrix(apply(x, 2, mean), nsub, np, byrow = TRUE)) * matrix(weights, nsub, np, byrow = TRUE) / matrix(apply(x, 2, sd), nsub, np, byrow = TRUE)))), 1, sum)
       # l1 norm B score: if there are weights specified

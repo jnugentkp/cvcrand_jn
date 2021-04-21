@@ -313,7 +313,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
 
   inter <- qmt[rw, ]
 
-  }else{
+  } else {
 
     sim <- 1
     # indicate simulation
@@ -337,7 +337,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
   
     pmt <-  omt <- mumt <- omumt <- matrix(NA, R, nsub)
 
-    for(s in 1:R){
+    for (s in 1:R) {
 
 
       trt <- which(qmt[s, ] == 1)
@@ -364,34 +364,34 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
   use_fraction_or_not = 1 * (fraction_or_not == "f")
 
   sat_num = R
-  for(i in 1:length(constraints)){  
-    if(any_or_not[i] == 0){
-      if(constraints_list[i] == "m"){
+  for (i in 1:length(constraints)) {  
+    if (any_or_not[i] == 0) {
+      if (constraints_list[i] == "m") {
         BL_means <- abs(mumt %*% as.matrix(x[,i]))
-        if(use_fraction_or_not[i] == 1){ 
+        if (use_fraction_or_not[i] == 1) { 
           BL_omean <- omumt %*% as.matrix(x[,i])
           sat_list <- c(1 * (BL_means <= constraints_value[i] * BL_omean))
-        }else{
+        } else {
           sat_list <- c(1 * (BL_means <= constraints_value[i]))
         }
-      }else if(constraints_list[i] == "s"){
+      } else if (constraints_list[i] == "s") {
         BL_sums <- abs((pmt %*% as.matrix(x[,i])))
-        if(use_fraction_or_not[i] == 1){
+        if (use_fraction_or_not[i] == 1) {
           BL_osum <- omt %*% as.matrix(x[,i])
           sat_list <- c(1 * (BL_sums <= constraints_value[i] * BL_osum))
-        }else{
+        } else {
           sat_list <- c(1 * (BL_sums <= constraints_value[i]))
         }
       }
     }
     sat_num = sum(sat_list)
-    if(sat_num > 0){
+    if (sat_num > 0) {
       omt <- omt[which(sat_list == 1), ]
       omumt <- omumt[which(sat_list == 1), ]
       pmt <- pmt[which(sat_list == 1), ]
       mumt <- mumt[which(sat_list == 1), ]
       qmt <- qmt[which(sat_list == 1), ]
-    }else{
+    } else {
       stop("Error: there is not any scheme that satifies the constraints.")
     }   
   }

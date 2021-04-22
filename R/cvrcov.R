@@ -396,28 +396,28 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
     }   
   }
 
-  if(!is.null(categorical)){
-      if(is.character(categorical)){
+  if (!is.null(categorical)) {
+      if (is.character(categorical)) {
         cat_index <- which(colnames(x) %in% categorical)
-      }else if(is.numeric(categorical)){
+      } else if (is.numeric(categorical)) {
         cat_index <- categorical
       }
-    }else{
+    } else {
       cat_index = c()
     }
 
   report_list <- list()
-  for(i in 1:length(constraints)){  
-    if(any_or_not[i] == 0){
-      if(constraints_list[i] == "m"){
+  for (i in 1:length(constraints)) {  
+    if (any_or_not[i] == 0) {
+      if (constraints_list[i] == "m") {
         report_i <- abs(mumt %*% as.matrix(x[,i]))
-      }else if(constraints_list[i] == "s"){
+      } else if (constraints_list[i] == "s") {
         report_i <- abs((pmt %*% as.matrix(x[,i])))
       }
-      if(!i %in% cat_index){
+      if (!i %in% cat_index) {
         report_ilist <- quantile(report_i, prob = c(0, 0.25, 0.5, 0.75, 1))
         names(report_ilist) <- c("Minimum", "25th Pctl", "Median", "75th Pctl", "Maximum")
-      }else{
+      } else {
         report_ilist <- as.data.frame(table(report_i))
         colnames(report_ilist) <- c("difference", "frequency")
       }
@@ -436,7 +436,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
    
   }
 
-  if (!is.null(savedata)){
+  if (!is.null(savedata)) {
 
     SchemeChosen <- rep(0, dim(qmt)[1])
 

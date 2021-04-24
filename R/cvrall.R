@@ -593,7 +593,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
 
 
 
-  if (!is.null(savedata)){
+  if (!is.null(savedata)) {
 
     SchemeChosen <- rep(0, dim(pmt)[1])
 
@@ -609,7 +609,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
   if (bhist){
 
 
-    if(sim == 1){
+    if (sim == 1) {
 
       par(mar = c(4, 3, 1.5, 1))
 
@@ -661,7 +661,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
 
 
   coin_matrix <- coin_descri <- al_clusters <- alno_clusters  <- hi_clusters <- lo_clusters <- NULL
-  if(check_validity){
+  if (check_validity) {
       
       n_pair <- t(combn(nsub, 2))      # all the schemes
 
@@ -692,10 +692,10 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
       
       
       # Always togerther
-      if(sum(same_arm_frac == 1) > 0){
+      if (sum(same_arm_frac == 1) > 0) {
         alto_index <- which(same_arm_frac == 1)
         alto_clt_pair <- c()
-        for(t in 1:length(alto_index)){
+        for (t in 1:length(alto_index)) {
           clt_index <- alto_index[t]
           alto_clts <- paste0(first_cluster[clt_index], " and ", second_cluster[clt_index])
           alto_clt_pair <- c(alto_clt_pair, alto_clts)
@@ -708,7 +708,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
       }
 
       # Always not together
-      if(sum(same_arm_frac == 0) > 0){
+      if (sum(same_arm_frac == 0) > 0) {
         alnoto_index <- which(same_arm_frac == 0)
         alnoto_clt_pair <- c()
         for(t in 1:length(alnoto_index)){
@@ -725,7 +725,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
       
       
       # user specify upper bound
-      if(sum(same_arm_frac >= samearmhi) > 0){
+      if (sum(same_arm_frac >= samearmhi) > 0) {
         hi_index <- which(same_arm_frac >= samearmhi)
         hi_pair <- c()
         for(t in 1:length(hi_index)){
@@ -742,7 +742,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
       }
       
       # user specified lower bound
-      if(sum(same_arm_frac <= samearmlo) > 0){
+      if (sum(same_arm_frac <= samearmlo) > 0) {
         lo_index <- which(same_arm_frac <= samearmlo)
         lo_pair <- c()
         for(t in 1:length(lo_index)){
@@ -809,7 +809,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
     assignment_message <- paste("You have indicated that you want to assign", ntrt_cluster, "clusters to treatment", "and", ntotal_cluster - ntrt_cluster, "to control")
 
     # indicate a enumeration process or a simulation process with the detailed number of schemes
-    if(sim == 1){
+    if (sim == 1) {
 
              scheme_message<-paste("Simulating", S, "schemes with", R, "unique schemes for", ntrt_cluster, "clusters in the treatment arm out of", ntotal_cluster, "clusters in total")
 
@@ -841,7 +841,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
 
      colnames(data_merge)[1] <- "arm"
 
-     if(!is.null(categorical)){
+     if (!is.null(categorical)) { 
      # put the categorical variables into factors to prepare for the "CreateTableOne" function
 
         if(is.character(categorical)){

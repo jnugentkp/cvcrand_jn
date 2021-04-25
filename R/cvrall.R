@@ -667,8 +667,8 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
 
       same_arm_count <- same_arm_frac <- diff_arm_count <- diff_arm_frac <- rep(NA, dim(n_pair)[1])
       
-      for(j in 1:(nsub-1)){
-        for(k in (j+1):nsub){
+      for (j in 1:(nsub - 1)) {
+        for (k in (j + 1):nsub) {
           same_arm <- sum((qmt[,j] - qmt[, k]) == 0)
           diff_arm <-  R_result - same_arm
           same_prop <- round(same_arm/R_result, 4)
@@ -711,7 +711,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
       if (sum(same_arm_frac == 0) > 0) {
         alnoto_index <- which(same_arm_frac == 0)
         alnoto_clt_pair <- c()
-        for(t in 1:length(alnoto_index)){
+        for (t in 1:length(alnoto_index)) {
           clt_index <- alnoto_index[t]
           alnoto_clts <- paste0(first_cluster[clt_index], " and ", second_cluster[clt_index])
           alnoto_clt_pair <- c(alnoto_clt_pair, alnoto_clts)
@@ -728,7 +728,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
       if (sum(same_arm_frac >= samearmhi) > 0) {
         hi_index <- which(same_arm_frac >= samearmhi)
         hi_pair <- c()
-        for(t in 1:length(hi_index)){
+        for (t in 1:length(hi_index)) {
           clt_index <- hi_index[t]
           hi_cluts <- paste0(first_cluster[clt_index], " and ", second_cluster[clt_index])
           hi_pair <- c(hi_pair, hi_cluts)
@@ -745,7 +745,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
       if (sum(same_arm_frac <= samearmlo) > 0) {
         lo_index <- which(same_arm_frac <= samearmlo)
         lo_pair <- c()
-        for(t in 1:length(lo_index)){
+        for (t in 1:length(lo_index)) {
           clt_index <- lo_index[t]
           lo_cluts <- paste0(first_cluster[clt_index], " and ", second_cluster[clt_index])
           lo_pair <- c(lo_pair, lo_cluts)
@@ -844,7 +844,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
      if (!is.null(categorical)) { 
      # put the categorical variables into factors to prepare for the "CreateTableOne" function
 
-        if(is.character(categorical)){
+        if (is.character(categorical)) {
                    varsToFactor <- categorical
          # if the categorical variables' names have been specified, these are the names in the data frame for the variables to be processed to be factors.
 

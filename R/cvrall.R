@@ -606,7 +606,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
       # output the schemes' matrix of pmt
 
 
-  if (bhist){
+  if (bhist) {
 
 
     if (sim == 1) {

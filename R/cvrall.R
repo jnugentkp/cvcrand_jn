@@ -869,21 +869,21 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
      colnames(DS)[1:2] <- c("arm = 0", "arm = 1")
 
   return(list(balancemetric = balancemetric,
-             allocation = allocation,
-             bscores = BL_Quantiles,
-             assignment_message = assignment_message,
-             scheme_message = scheme_message,
-             cutoff_message = cutoff_message,
-             choice_message = choice_message,
-             data_CR = data_merge,
-             baseline_table = DS, 
-             cluster_coincidence = coin_matrix, 
-             cluster_coin_des = coin_descri, 
-             clusters_always_pair = al_clusters, 
-             clusters_always_not_pair = alno_clusters, 
-             clusters_high_pair = hi_clusters, 
-             clusters_low_pair = lo_clusters, 
-             overall_allocations = summary_constraints))
+              allocation = allocation,
+              bscores = BL_Quantiles,
+              assignment_message = assignment_message,
+              scheme_message = scheme_message,
+              cutoff_message = cutoff_message,
+              choice_message = choice_message,
+              data_CR = data_merge,
+              baseline_table = DS, 
+              cluster_coincidence = coin_matrix, 
+              cluster_coin_des = coin_descri, 
+              clusters_always_pair = al_clusters, 
+              clusters_always_not_pair = alno_clusters, 
+              clusters_high_pair = hi_clusters, 
+              clusters_low_pair = lo_clusters, 
+              overall_allocations = summary_constraints))
 
   ## return the allocations, number of schemes, cutoff and choice messages, resulted arms comparisons from BL
 

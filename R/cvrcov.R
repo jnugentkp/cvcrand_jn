@@ -323,7 +323,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
     qmt <- matrix(NA, S, nsub)
 
 
-    for(s in 1:S){
+    for (s in 1:S) {
 
       trt <- sample(1:nsub, ntrt)
             
@@ -631,17 +631,17 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
       colnames(DS)[1:2] <- c("arm = 0", "arm = 1")
 
   return(list(allocation = Allocation,
-             assignment_message = assignment_message,
-             scheme_message = scheme_message,
-             data_CR = data_merge,
-             baseline_table = DS, 
-             cluster_coincidence = coin_matrix, 
-             cluster_coin_des = coin_descri, 
-             clusters_always_pair = al_clusters, 
-             clusters_always_not_pair = alno_clusters, 
-             clusters_high_pair = hi_clusters, 
-             clusters_low_pair = lo_clusters, 
-             overall_allocations = summary_constraints, 
-             overall_summary = report_list))
+              assignment_message = assignment_message,
+              scheme_message = scheme_message,
+              data_CR = data_merge,
+              baseline_table = DS, 
+              cluster_coincidence = coin_matrix, 
+              cluster_coin_des = coin_descri, 
+              clusters_always_pair = al_clusters, 
+              clusters_always_not_pair = alno_clusters, 
+              clusters_high_pair = hi_clusters, 
+              clusters_low_pair = lo_clusters, 
+              overall_allocations = summary_constraints, 
+              overall_summary = report_list))
 
 }

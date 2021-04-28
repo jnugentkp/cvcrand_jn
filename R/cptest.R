@@ -159,11 +159,11 @@ cptest <- function(outcome, clustername, z = NULL, cspacedatname, outcometype, c
 
            	                            dpmt[i, j] <- -1
 
-                                            }
+                        }
 
-  	                                }
+  	        }
 
-                          }
+  }
     # transform 0 in the constrained space into -1
 
 
@@ -188,7 +188,7 @@ cptest <- function(outcome, clustername, z = NULL, cspacedatname, outcometype, c
    x$outcome <- outcome
    # merge the outcome and the covariates into one data frame
 
-   if (outcometype == "continuous"){
+   if (outcometype == "continuous") {
 
        ADJMeans <- tapply(lm(formula = fm, data = x)$res, clustername, mean)
        # for continuous outcome, we use linear regression

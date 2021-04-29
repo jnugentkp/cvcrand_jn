@@ -263,11 +263,13 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
     }
     sat_num = sum(sat_list)
     if (sat_num > 0) {
+
       omt <- omt[which(sat_list == 1), ]
       omumt <- omumt[which(sat_list == 1), ]
       pmt <- pmt[which(sat_list == 1), ]
       mumt <- mumt[which(sat_list == 1), ]
       qmt <- qmt[which(sat_list == 1), ]
+      
     } else {
       stop("Error: there is not any scheme that satifies the constraints.")
     }   

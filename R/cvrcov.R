@@ -190,7 +190,7 @@ if (!is.null(seed)) {
 
       np <- dim(x)[2]      # number of covariates for constrained randomization
 
-  if(length(constraints) != np){
+  if (length(constraints) != np) {
 
     stop("Error: constraints should be matched with all variables")
   

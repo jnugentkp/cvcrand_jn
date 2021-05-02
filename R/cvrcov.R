@@ -195,6 +195,7 @@ if (!is.null(seed)) {
     stop("Error: constraints should be matched with all variables")
   
   }
+  
 id = clustername
 n = ntotal_cluster
 ntrt = ntrt_cluster

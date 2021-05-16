@@ -625,7 +625,7 @@ if (choose(nsub, ntrt) <= size | nosim == TRUE) {       # enumeration if there a
 
     }
 
-      Descriptive_statistics <- CreateTableOne( vars = colnames(data_merge)[c(-1, -2)], strata=c("arm"), data=data_merge, test =  FALSE)
+      Descriptive_statistics <- CreateTableOne(vars = colnames(data_merge)[c(-1, -2)], strata=c("arm"), data=data_merge, test =  FALSE)
        # create the descriptive table to compare the two arms from constrained randomization using BL
 
       invisible(capture.output(DS <- as.data.frame(print(Descriptive_statistics))))

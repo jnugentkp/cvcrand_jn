@@ -593,7 +593,7 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
 
 
 
-  if (!is.null(savedata)) {
+  #if (!is.null(savedata)) {
 
     SchemeChosen <- rep(0, dim(pmt)[1])
 
@@ -601,8 +601,9 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
 
     pmt<-cbind(SchemeChosen, pmt)
 
-    write.csv(pmt[subid, ], file = savedata, row.names=FALSE)
-  }
+    #write.csv(pmt[subid, ], file = savedata, row.names=FALSE)
+     allocation_space <-  pmt[subid, ]                                                                    
+  #}
       # output the schemes' matrix of pmt
 
 
@@ -869,6 +870,10 @@ cvrall = function(clustername = NULL, x, categorical = NULL, weights = NULL, nto
      colnames(DS)[1:2] <- c("arm = 0", "arm = 1")
 
   return(list(balancemetric = balancemetric,
+
+              ###########################
+              allocation_space = allocation_space,
+              
               allocation = allocation,
               bscores = BL_Quantiles,
               assignment_message = assignment_message,

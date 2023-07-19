@@ -189,31 +189,23 @@ cptest <- function(outcome, clustername, z = NULL, cspacedatname, outcometype, c
    # merge the outcome and the covariates into one data frame
 
    if (outcometype == "continuous") {
-
-       ADJMeans <- tapply(lm(formula = fm, data = x)$res, clustername, mean)
+       resids <- lm(formula = fm, data = x)$res
        # for continuous outcome, we use linear regression
 
-       Diffs <- as.matrix(dpmt) %*% ADJMeans
-       # the permutation statistic
-
-       pvalue <- mean(abs(Diffs) >= abs(Diffs[rw, ]))
-
    } else if (outcometype == "binary") {
-
-       ADJMeans <- tapply(residuals(glm(formula = fm, family = "binomial", data = x), type = "response"), clustername, mean)
+       resids <- residuals(glm(formula = fm, family = "binomial", data = x), type = "response")
        # for binary outcome, we use logistic regression
 
-       Diffs <- as.matrix(dpmt) %*% ADJMeans
-       # the permutation statistic
-main_estimate <- abs(Diffs[rw, ])
-       pvalue <- mean(abs(Diffs) >= abs(Diffs[rw, ]))
-
    } else {
-
    	stop("Error: Please specify the correct outcometype for continuous or binary")
     # for other type outcome, just cannot run the cptest function
-
    }
+   print(resids[1:5])                                                                        
+  ADJMeans <- tapply(resids, clustername, mean)
+  Diffs <- as.matrix(dpmt) %*% ADJMeans
+  # the permutation statistic
+  main_estimate <- abs(Diffs[rw, ])
+  pvalue <- mean(abs(Diffs) >= abs(Diffs[rw, ]))
 
  FinalScheme <- data.frame(Cluster_ID = names(ADJMeans), Intervention = as.vector(as.matrix(tc)))
  # the final chosen scheme in the constrained space

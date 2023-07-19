@@ -136,7 +136,7 @@ cptest <- function(outcome, clustername, z = NULL, cspacedatname, outcometype, c
  
 
 
-  pmt <- read.csv(cspacedatname, header = TRUE)
+  pmt <- cspacedatname#read.csv(cspacedatname, header = TRUE)
   # read in the data
 
   rw <- which(pmt[ , 1] == 1)

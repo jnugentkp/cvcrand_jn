@@ -223,7 +223,7 @@ main_estimate <- abs(Diffs[rw, ])
 
   return(list(FinalScheme = FinalScheme,
               pvalue = round(pvalue, 4),
-              main_estimate,
+              main_estimate = main_estimate,
   	          pvalue_statement = pvalue_message))
 
   }

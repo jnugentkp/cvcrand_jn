@@ -205,7 +205,7 @@ cptest <- function(outcome, clustername, z = NULL, cspacedatname, outcometype, c
 
        Diffs <- as.matrix(dpmt) %*% ADJMeans
        # the permutation statistic
-
+main_estimate <- abs(Diffs[rw, ])
        pvalue <- mean(abs(Diffs) >= abs(Diffs[rw, ]))
 
    } else {
@@ -223,6 +223,7 @@ cptest <- function(outcome, clustername, z = NULL, cspacedatname, outcometype, c
 
   return(list(FinalScheme = FinalScheme,
               pvalue = round(pvalue, 4),
+              main_estimate,
   	          pvalue_statement = pvalue_message))
 
   }

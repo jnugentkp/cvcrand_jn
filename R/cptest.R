@@ -63,7 +63,7 @@ cptest <- function(outcome, clustername, z = NULL, cspacedatname, outcometype, c
    if (!setequal(c(1 : dim(x)[2])[apply(x, 2, function(x) length(unique(x[!is.na(x)]))) <= 4], categorical)) {
      ## check the categorical variables have been correctly specified
 
-     warning(cat("Warning: each of columns", c(1 : dim(x)[2])[apply(x, 2, function(x) length(unique(x))) <= 4], "has less than or equal to 4 unique observations. Please check all the categorical variables have been correctly specified."))
+     #warning(cat("Warning: each of columns", c(1 : dim(x)[2])[apply(x, 2, function(x) length(unique(x))) <= 4], "has less than or equal to 4 unique observations. Please check all the categorical variables have been correctly specified."))
 
 
    }
